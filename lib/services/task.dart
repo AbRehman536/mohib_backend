@@ -4,9 +4,13 @@ import 'package:mohib_backend/models/task.dart';
 class TaskServices{
   ///Create Task
   Future createTask(TaskModel model)async{
+    DocumentReference documentReference = await FirebaseFirestore.instance
+      .collection("TaskCollection")
+        .doc();
     return await FirebaseFirestore.instance
         .collection("TaskCollection")
-        .add(model.toJson());
+        .doc(documentReference.id)
+        .set(model.toJson(documentReference.id));
   }
   ///Update Task
   Future updateTask(TaskModel model)async{
@@ -16,10 +20,10 @@ class TaskServices{
         .update({"title" : model.title, "description": model.description});
   }
   ///Delete Task
-  Future deleteTask(TaskModel model)async{
+  Future deleteTask(String taskID)async{
     return await FirebaseFirestore.instance
         .collection("TaskCollection")
-        .doc(model.docId)
+        .doc(taskID)
         .delete();
   }
   ///Mark As Completed
