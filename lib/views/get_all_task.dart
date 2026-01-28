@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mohib_backend/models/task.dart';
 import 'package:mohib_backend/services/task.dart';
 import 'package:mohib_backend/views/create_task.dart';
+import 'package:mohib_backend/views/get_Incompleted_Task.dart';
+import 'package:mohib_backend/views/get_completed_task.dart';
 import 'package:mohib_backend/views/update_task.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +15,14 @@ class GetAllTask extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Get All Task"),
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> GetCompletedTask()));
+          }, icon: Icon(Icons.circle)),
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> GetInCompletedTask()));
+          }, icon: Icon(Icons.incomplete_circle)),
+        ],
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
         Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateTask()));
@@ -30,6 +40,19 @@ class GetAllTask extends StatelessWidget {
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    Checkbox(
+                        value: taskList[index].isCompleted,
+                        onChanged: (value)async{
+                         try {
+                            await TaskServices().markAsCompleted(
+                                taskID: taskList[index].docId.toString(),
+                                isCompleted: value!
+                            );
+                          }catch(e){
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(content: Text(e.toString())));
+                         }
+                        }),
                     IconButton(onPressed: ()async{
                       try{
                         await TaskServices().deleteTask(taskList[index].docId.toString());
