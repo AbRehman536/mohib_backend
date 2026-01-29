@@ -4,6 +4,7 @@ import 'package:mohib_backend/services/task.dart';
 import 'package:mohib_backend/views/create_task.dart';
 import 'package:mohib_backend/views/get_Incompleted_Task.dart';
 import 'package:mohib_backend/views/get_completed_task.dart';
+import 'package:mohib_backend/views/get_faorite.dart';
 import 'package:mohib_backend/views/update_task.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +23,9 @@ class GetAllTask extends StatelessWidget {
           IconButton(onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context)=> GetInCompletedTask()));
           }, icon: Icon(Icons.incomplete_circle)),
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> GetFavoriteTask()));
+          }, icon: Icon(Icons.favorite)),
         ],
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
@@ -61,6 +65,17 @@ class GetAllTask extends StatelessWidget {
                             .showSnackBar(SnackBar(content: Text(e.toString())));
                       }
                     }, icon: Icon(Icons.delete)),
+                    IconButton(onPressed: ()async{
+                      if(taskList[index].favorite!.contains("1")){
+                        await TaskServices().removeFromFavorite(
+                            taskID: taskList[index].docId.toString(),
+                            userID: "1");
+                      }else{
+                        await TaskServices().addToFavorite(
+                            taskID: taskList[index].docId.toString(),
+                            userID: "1");
+                      }
+                    }, icon: Icon(taskList[index].favorite!.contains("1") ? Icons.favorite : Icons.favorite_border)),
                     IconButton(onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> UpdateTask(model: taskList[index])));
                     }, icon: Icon(Icons.edit))
