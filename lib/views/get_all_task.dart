@@ -5,6 +5,7 @@ import 'package:mohib_backend/views/create_task.dart';
 import 'package:mohib_backend/views/get_Incompleted_Task.dart';
 import 'package:mohib_backend/views/get_completed_task.dart';
 import 'package:mohib_backend/views/get_faorite.dart';
+import 'package:mohib_backend/views/get_priority.dart';
 import 'package:mohib_backend/views/update_task.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,9 @@ class GetAllTask extends StatelessWidget {
           IconButton(onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context)=> GetFavoriteTask()));
           }, icon: Icon(Icons.favorite)),
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> GetAllPriority()));
+          }, icon: Icon(Icons.category)),
         ],
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
