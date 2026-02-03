@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mohib_backend/models/priority.dart';
 import 'package:mohib_backend/services/priority.dart';
 import 'package:mohib_backend/views/create_priority.dart';
+import 'package:mohib_backend/views/get_priorities.dart';
 import 'package:provider/provider.dart';
 
 class GetAllPriority extends StatelessWidget {
@@ -36,7 +37,10 @@ class GetAllPriority extends StatelessWidget {
                     }, icon: Icon(Icons.delete)),
                     IconButton(onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> CreatePriority(model: PriorityTaskModel(), isUpdatedMode: true)));
-                    }, icon: Icon(Icons.edit))
+                    }, icon: Icon(Icons.edit)),
+                    IconButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> GetPriorities(model: PriorityTaskModel())));
+                    }, icon: Icon(Icons.arrow_forward)),
                     ],),
               );
             },);

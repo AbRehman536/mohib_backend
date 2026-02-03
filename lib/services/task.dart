@@ -88,4 +88,14 @@ class TaskServices{
         .doc(taskID)
         .update({"favorite" : FieldValue.arrayRemove([userID])});
   }
+  ///get Task by Priority ID
+  Stream<List<TaskModel>> getTaskByPriorityID(String priorityID){
+    return FirebaseFirestore.instance
+        .collection("TaskCollection")
+        .where("priorityID", isEqualTo: priorityID)
+        .snapshots()
+        .map((taskList) => taskList.docs
+        .map((taskJson)=> TaskModel.fromJson(taskJson.data())
+    ).toList());
+  }
 }
