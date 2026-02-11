@@ -25,11 +25,11 @@ class UserServices{
         .update({"name": model.name, "phone": model.phone, "address": model.address});
   }
   ///Get User By ID
-  Stream<UserModel> getUserByID(String userID){
+  Future<UserModel> getUserByID(String userID){
     return FirebaseFirestore.instance
         .collection(userCollection)
         .doc(userID)
-        .snapshots()
-        .map((user)=> UserModel.fromJson(user.data()!));
+        .get()
+        .then((user)=> UserModel.fromJson(user.data()!));
   }
 }

@@ -16,6 +16,7 @@ class _UpdateTaskState extends State<UpdateTask> {
   bool isLoading = false;
   @override
   void initState(){
+    super.initState();
     titleController = TextEditingController(
       text: widget.model.title.toString());
     descriptionController = TextEditingController(

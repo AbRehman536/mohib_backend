@@ -6,14 +6,19 @@ import 'package:mohib_backend/views/get_Incompleted_Task.dart';
 import 'package:mohib_backend/views/get_completed_task.dart';
 import 'package:mohib_backend/views/get_faorite.dart';
 import 'package:mohib_backend/views/get_priority.dart';
+import 'package:mohib_backend/views/profile.dart';
 import 'package:mohib_backend/views/update_task.dart';
 import 'package:provider/provider.dart';
+
+import '../provider/user.dart';
 
 class GetAllTask extends StatelessWidget {
   const GetAllTask({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    var userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Get All Task"),
@@ -30,6 +35,9 @@ class GetAllTask extends StatelessWidget {
           IconButton(onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context)=> GetAllPriority()));
           }, icon: Icon(Icons.category)),
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> Profile()));
+          }, icon: Icon(Icons.person)),
         ],
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
@@ -70,16 +78,16 @@ class GetAllTask extends StatelessWidget {
                       }
                     }, icon: Icon(Icons.delete)),
                     IconButton(onPressed: ()async{
-                      if(taskList[index].favorite!.contains("1")){
+                      if(taskList[index].favorite!.contains(userProvider.getUser().docId.toString())){
                         await TaskServices().removeFromFavorite(
                             taskID: taskList[index].docId.toString(),
-                            userID: "1");
+                            userID: userProvider.getUser().docId.toString());
                       }else{
                         await TaskServices().addToFavorite(
                             taskID: taskList[index].docId.toString(),
-                            userID: "1");
+                            userID: userProvider.getUser().docId.toString());
                       }
-                    }, icon: Icon(taskList[index].favorite!.contains("1") ? Icons.favorite : Icons.favorite_border)),
+                    }, icon: Icon(taskList[index].favorite!.contains(userProvider.getUser().docId.toString()) ? Icons.favorite : Icons.favorite_border)),
                     IconButton(onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> UpdateTask(model: taskList[index])));
                     }, icon: Icon(Icons.edit))
